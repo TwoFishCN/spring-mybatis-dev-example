@@ -12,6 +12,7 @@
             <property name="suppressDate" value="true"/>
         </commentGenerator>
 
+        <!--数据源配置-->
         <jdbcConnection
                 userId="root"
                 password="root"
@@ -22,19 +23,24 @@
             <property name="forceBigDecimals" value="true"/>
         </javaTypeResolver>
 
+        <!--Maven 执行目录是项目根目录, 因此基于项目根目录往下配置-->
+        <!-- 配置ModelClass的生成地址以及一些定制需求-->
         <javaModelGenerator targetPackage="com.example.mybatis.domain" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
+        <!-- 配置sql xml的生成地址-->
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
+        <!-- 配置sql xml的生成类型等-->
         <javaClientGenerator targetPackage="com.example.mybatis.mapper" type="XMLMAPPER" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
+        <!--需要生成的表配置 schema TableName-->
         <table schema="mybatis" tableName="user" enableCountByExample="true" enableDeleteByExample="true"
                enableSelectByExample="true" enableUpdateByExample="true"/>
 

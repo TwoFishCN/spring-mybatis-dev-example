@@ -24,10 +24,17 @@ public class UserMapperTest {
 
     @Test
     public void selectByExample() {
+        User user = new User();
+        user.setName("hello");
+        user.setCityId(1);
+        Integer id = userMapper.insert(user);
+
         UserExample example = new UserExample();
         example.or().andNameEqualTo("hello");
-
         List<User> userList = userMapper.selectByExample(example);
-        Assert.assertTrue(userList != null);
+
+        Assert.assertTrue(userList != null && !userList.isEmpty());
+
+        userMapper.deleteByPrimaryKey(id);
     }
 }
