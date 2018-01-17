@@ -3,11 +3,9 @@ package com.example.mybatis.mapper;
 import com.example.mybatis.domain.City;
 import com.example.mybatis.domain.CityExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
-@Mapper
 public interface CityMapper {
     long countByExample(CityExample example);
 
@@ -18,6 +16,8 @@ public interface CityMapper {
     int insert(City record);
 
     int insertSelective(City record);
+
+    List<City> selectByExampleWithRowbounds(CityExample example, RowBounds rowBounds);
 
     List<City> selectByExample(CityExample example);
 

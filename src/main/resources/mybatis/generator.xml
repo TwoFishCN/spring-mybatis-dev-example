@@ -7,6 +7,9 @@
     <!--<classPathEntry location=""/>-->
 
     <context id="context" targetRuntime="MyBatis3">
+
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
             <property name="suppressDate" value="true"/>
@@ -41,10 +44,8 @@
         </javaClientGenerator>
 
         <!--需要生成的表配置 schema TableName-->
-        <table schema="mybatis" tableName="user" enableCountByExample="true" enableDeleteByExample="true"
-               enableSelectByExample="true" enableUpdateByExample="true"/>
+        <table schema="mybatis" tableName="user"/>
 
-        <table schema="mybatis" tableName="city" enableCountByExample="true" enableDeleteByExample="true"
-               enableSelectByExample="true" enableUpdateByExample="true"/>
+        <table schema="mybatis" tableName="city"/>
     </context>
 </generatorConfiguration>
