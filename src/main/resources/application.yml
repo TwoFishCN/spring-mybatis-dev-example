@@ -1,0 +1,21 @@
+logging.level.org.apache.ibatis: debug
+logging.level.com.example.mybatis.mapper: trace
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/mybatis?useSSL=false
+  session:
+    store-type: jdbc
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+flyway:
+    enabled: true # Enable flyway.
+    locations: classpath:db/migration # locations of migrations scripts
+    sql-migration-prefix: V #
+    sql-migration-suffix: .sql #
+    validate-on-migrate: true
+    baseline-on-migrate: true
