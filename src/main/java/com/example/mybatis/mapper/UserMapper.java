@@ -3,9 +3,12 @@ package com.example.mybatis.mapper;
 import com.example.mybatis.domain.User;
 import com.example.mybatis.domain.UserExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+@Mapper
 public interface UserMapper {
     long countByExample(UserExample example);
 
