@@ -1,8 +1,11 @@
 package com.example.mybatis.controller;
 
 import com.example.mybatis.domain.City;
+import com.example.mybatis.domain.CityExample;
 import com.example.mybatis.mapper.CityMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/city")

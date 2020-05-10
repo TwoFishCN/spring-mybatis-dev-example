@@ -4,48 +4,7 @@
 
 ## 项目组件
 
-### Spring Session
-
-使用Spring Session 做JDBC的Session存储, 极大程度的优化大量连接下Session的内存占用。使用方法也十分方便简单。
-仅需引入相关依赖，并加入配置即可。
-pom.xml 需要加入依赖项
-```xml
-    <dependency>
-        <groupId>org.springframework.session</groupId>
-        <artifactId>spring-session</artifactId>
-    </dependency>
-```
- 并且在 application.yml 配置中需要加入配置
- ```yaml
-spring:
-  session:
-    store-type: jdbc
-```
-之后AutoConfig工具会自动创建数据库表等。
-
 ### Flyway 数据库迁移工具
-
-pom.xml 依赖
-
-```xml
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-```
- application.yml 配置
- ```yaml
-flyway:
-    enabled: true # Enable flyway.
-    locations: classpath:db/migration # locations of migrations scripts
-    sql-migration-prefix: V #
-    sql-migration-suffix: .sql #
-    validate-on-migrate: true
-    baseline-on-migrate: true
-```
-db/migration 下存放SQL脚本, 需要注意的是脚本的命名规范, 以及递增式的表结构操作。
-命名规范：V(number)_(number)__name[_time].sql
 
 ## Spring Boot with Mybatis 配置说明
 
@@ -87,11 +46,13 @@ pom.xml 以及mybatis-generator插件需要的一个生成规范的配置文件�
      </dependencies>
  </plugin>
 ```
+
 加入插件配置应该在Maven命令中找到新的操作, idea 工具中的表现如下图：
 ![mybatis-generator-idea-maven-menu](doc/image/mybatis-generator-idea-maven-menu.jpg)
 
 值得详细注意的内容是resources/mybatis/generator.xml, 这个文件是mybatis-generator的配置文件详细说明了
 文件该如何生成以及生成规范等。generator.xml 如下：
+
 ```xml
 <generatorConfiguration>
 
@@ -162,5 +123,7 @@ mapper-locations直接指向我们的mapper.xml所在目录下所有mapper.xml
 public interface CityMapper {
 }
 ```
-## 总结
-主要是Mybatis Generator生成的代码要和SpringBoot结合起来需要特殊处理, 以及一些配置细节需要注意。
+
+# 其他
+
+使用 Mybatis 代码生成器之前，需要确保数据库文件的存在，所以这之前需要启动Spring Boot，有Flyway将数据初始话。

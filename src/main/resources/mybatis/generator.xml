@@ -8,7 +8,18 @@
 
     <context id="context" targetRuntime="MyBatis3">
 
+        <plugin type="org.mybatis.generator.plugins.CachePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.MapperConfigPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin"/>
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.VirtualPrimaryKeyPlugin"/>
 
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
@@ -17,10 +28,10 @@
 
         <!--数据源配置-->
         <jdbcConnection
-                userId="root"
+                userId="sa"
                 password="root"
-                driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/mybatis"/>
+                driverClass="org.h2.Driver"
+                connectionURL="jdbc:h2:file:./mybatis/database;AUTO_SERVER=TRUE"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="true"/>
@@ -44,8 +55,8 @@
         </javaClientGenerator>
 
         <!--需要生成的表配置 schema TableName-->
-        <table schema="mybatis" tableName="user"/>
+        <table tableName="user"/>
 
-        <table schema="mybatis" tableName="city"/>
+        <table tableName="city"/>
     </context>
 </generatorConfiguration>

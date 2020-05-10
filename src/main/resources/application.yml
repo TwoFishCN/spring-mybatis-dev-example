@@ -3,9 +3,9 @@ logging.level.com.example.mybatis.mapper: trace
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    username:
-    password:
-    url: jdbc:h2:file:./mybatis/database
+    username: sa
+    password: root
+    url: jdbc:h2:file:./mybatis/database;AUTO_SERVER=TRUE
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
