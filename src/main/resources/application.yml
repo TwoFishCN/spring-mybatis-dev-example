@@ -1,5 +1,6 @@
-logging.level.org.apache.ibatis: debug
-logging.level.com.example.mybatis.mapper: trace
+logging:
+  level.org.apache.ibatis: debug
+  level.com.example.mybatis.mapper: trace
 spring:
   datasource:
     driver-class-name: org.h2.Driver
