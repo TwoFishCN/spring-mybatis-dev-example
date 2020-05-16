@@ -14,37 +14,42 @@
 pom.xml 以及mybatis-generator插件需要的一个生成规范的配置文件。由于使用了Mysql数据库因此在插件中
 引入了Mysql依赖。pom.xml 如下:
 ```xml
-<plugin>
-     <groupId>org.mybatis.generator</groupId>
-     <artifactId>mybatis-generator-maven-plugin</artifactId>
-     <version>1.3.6</version>
-     <configuration>
-         <configurationFile>src/main/resources/mybatis/generator.xml
-         </configurationFile>
-         <verbose>true</verbose>
-         <overwrite>true</overwrite>
-     </configuration>
-     <executions>
-         <execution>
-             <id>Generate MyBatis Artifacts</id>
-             <goals>
-                 <goal>generate</goal>
-             </goals>
-         </execution>
-     </executions>
-     <dependencies>
-         <dependency>
-             <groupId>org.mybatis.generator</groupId>
-             <artifactId>mybatis-generator-core</artifactId>
-             <version>1.3.6</version>
-         </dependency>
-         <dependency>
-             <groupId>mysql</groupId>
-             <artifactId>mysql-connector-java</artifactId>
-             <version>5.1.44</version>
-         </dependency>
-     </dependencies>
- </plugin>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <configurationFile>src/main/resources/mybatis/generator.xml
+                    </configurationFile>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>Generate MyBatis Artifacts</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.mybatis.generator</groupId>
+                        <artifactId>mybatis-generator-core</artifactId>
+                        <version>1.4.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.19</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.200</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
 ```
 
 加入插件配置应该在Maven命令中找到新的操作, idea 工具中的表现如下图：
@@ -56,9 +61,14 @@ pom.xml 以及mybatis-generator插件需要的一个生成规范的配置文件�
 ```xml
 <generatorConfiguration>
 
-    <!--<classPathEntry location=""/>-->
+    <context id="context" targetRuntime="MyBatis3Simple">
 
-    <context id="context" targetRuntime="MyBatis3">
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
+            <property name="caseSensitive" value="true"/>
+        </plugin>
+
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
             <property name="suppressDate" value="true"/>
@@ -66,10 +76,10 @@ pom.xml 以及mybatis-generator插件需要的一个生成规范的配置文件�
 
         <!--数据源配置-->
         <jdbcConnection
-                userId="root"
+                userId="sa"
                 password="root"
-                driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://localhost:3306/mybatis"/>
+                driverClass="org.h2.Driver"
+                connectionURL="jdbc:h2:file:./mybatis/database;AUTO_SERVER=TRUE"/>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="true"/>
@@ -93,35 +103,30 @@ pom.xml 以及mybatis-generator插件需要的一个生成规范的配置文件�
         </javaClientGenerator>
 
         <!--需要生成的表配置 schema TableName-->
-        <table schema="mybatis" tableName="user" enableCountByExample="true" enableDeleteByExample="true"
-               enableSelectByExample="true" enableUpdateByExample="true"/>
-
-        <table schema="mybatis" tableName="city" enableCountByExample="true" enableDeleteByExample="true"
-               enableSelectByExample="true" enableUpdateByExample="true"/>
+        <table tableName="user"/>
+        <table tableName="city"/>
     </context>
 </generatorConfiguration>
 ```
+
 这些配置完成之后, 通过Maven命令可以生成相关model, mapper以及绑定的sql及xml文件
 ![mybatis-generator-result.jpg](doc/image/mybatis-generator-result.jpg)
 异常就可以正常生成我们需要的BaseDAO Code了。
 
 ### 集成Spring Boot 
 
-虽然按照Mybatis Generator生成了代码, 但是在环境中还无法直接将xxxMapper直接注入给@Service或其他@Component
-直接使用, 但是想要正常集成到Spring Boot中也是比较简单。第一、可以使用多重XML配置文件来控制逻辑；第二可以使用
-application.yml和注释配合的方式。这里介绍本项目中采用的第二种方式。首先我们需要给Mybatis指定我们的Mapper.xml
-的位置, 具体方式是
-首先，在application.yml中加入配置。
+虽然按照Mybatis Generator生成了代码, 在Spring环境中必然需要直接将xxxMapper直接注入给@Service或其他@Component使用。
+
+两种配置可以使用
+
+1. 使用多重XML配置文件来控制逻辑
+2. 使用application.yml和注释配合的方式。
+
+第二种方式相对配置少，我们只需要给Mybatis指定我们的Mapper.xml的位置, 具体方式是在application.yml中加入配置。
+
 ```yaml
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-```
-mapper-locations直接指向我们的mapper.xml所在目录下所有mapper.xml
-然后再所有的XxxMapper接口代码中加入@Mapper注释, 像下面这样
-```java
-@Mapper
-public interface CityMapper {
-}
 ```
 
 # 其他
